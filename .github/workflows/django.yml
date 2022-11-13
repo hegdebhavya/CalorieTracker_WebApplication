@@ -83,7 +83,7 @@ jobs:
         touch calorietracker.tar.gz
         tar --exclude=calorietracker.tar.gz   -zcvf calorietracker.tar.gz .
         DATE=`date '+%s'`
-        branch= `GITHUB_REF##*/`
-        echo ${branch}
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        echo $branch
         aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-${branch}-$DATE.tar.gz
         aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-${branch}.tar.gz
