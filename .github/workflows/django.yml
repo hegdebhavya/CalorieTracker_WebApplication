@@ -50,7 +50,7 @@ jobs:
         isort .
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: lint
     strategy:
       max-parallel: 4
       matrix:
