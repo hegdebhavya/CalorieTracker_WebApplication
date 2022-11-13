@@ -65,12 +65,12 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
         REGION: us-east-1
-        BRANCH: ${GITHUB_REF##*/}   
       run: |
         pip install awscli
         touch calorietracker.tar.gz
         tar --exclude=calorietracker.tar.gz   -zcvf calorietracker.tar.gz .
         DATE=`date '+%s'`
-        echo ${GITHUB_REF##*/}
-        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$BRANCH-$DATE.tar.gz
-        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$BRANCH.tar.gz
+        branch= ${GITHUB_REF##*/}
+        echo $branch
+        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$branch-$DATE.tar.gz
+        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$branch.tar.gz
