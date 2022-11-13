@@ -1,7 +1,7 @@
 name: Cloud Bloom Build
 on:
   push:
-    branches: [ main, siri_cognito ]
+    branches: [ main]
   pull_request:
     branches: [ main ]
 
