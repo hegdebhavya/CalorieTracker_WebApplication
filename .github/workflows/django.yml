@@ -56,10 +56,17 @@ jobs:
         pip install -r ./requirements.txt
         pwd
     - name: Upload S3    
-      uses: shallwefootball/s3-upload-action@master
       id: S3
       with:
         aws_key_id: ${{secrets.AWS_KEY_ID}}
         aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+        AWS_DEFAULT_REGION : us-east-1
         aws_bucket: calorietracker283
         source_dir: .
+      run: |
+        pip install awscli
+        touch calorietracker.tar.gz
+        tar --exclude=calorietracker.tar.gz   -zcvf calorietracker.tar.gz .
+        DATE=`date '+%s'`
+        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$branch-$DATE.tar.gz
+        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$branch.tar.gz
