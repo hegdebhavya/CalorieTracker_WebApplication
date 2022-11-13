@@ -49,8 +49,8 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-        aws_key_id: ${{secrets.AWS_KEY_ID}}
-        aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+        AWS_ACCESS_KEY_ID: ${{secrets.AWS_KEY_ID}}
+        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
         AWS_DEFAULT_REGION : us-east-1
         aws_bucket: calorietracker283
         source_dir: .
@@ -60,11 +60,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r ./requirements.txt
         pwd
-    - name: Upload S3    
+    - name: Upload S3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+        REGION: us-east-1
+        BRANCH: ${GITHUB_REF##*/}   
       run: |
         pip install awscli
         touch calorietracker.tar.gz
         tar --exclude=calorietracker.tar.gz   -zcvf calorietracker.tar.gz .
         DATE=`date '+%s'`
-        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$branch-$DATE.tar.gz
-        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$branch.tar.gz
+        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$BRANCH-$DATE.tar.gz
+        aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$BRANCH.tar.gz
