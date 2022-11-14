@@ -80,6 +80,8 @@ jobs:
         pip install awscli
         touch calorietracker.tar.gz
         pip install -r ./requirements.txt
+        pip install awscli
+        touch calorietracker.tar.gz
         tar --exclude=calorietracker.tar.gz   -zcvf calorietracker.tar.gz .
         DATE=`date '+%s'`
         aws s3 cp calorietracker.tar.gz s3://calorietracker283/calorietracker-$DATE.tar.gz
@@ -88,6 +90,7 @@ jobs:
   push_to_registry:
     needs: deploy
     runs-on: ubuntu-latest
+
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Set up QEMU
